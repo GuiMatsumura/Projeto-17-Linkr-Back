@@ -15,6 +15,6 @@ export async function validadeSignup (req, res, next){
     return res.sendStatus(409);
   };
 
-  res.locals.signupData = signupData;
+  /* res.locals.signupData = signupData; */
   next();
 };

@@ -8,10 +8,10 @@ async function getUserByEmail(email) {
 async function createUser(email, username, password, photo) {
   const SALT = 10;
   const passwordHash = bcrypt.hashSync(password, SALT);
-  return db.query(`
+  return connection.query(`
     INSERT INTO users (email, username, password, photo) 
     VALUES ($1, $2, $3, $4)`, 
-    [email, username, password, photo]);
+    [email, username, passwordHash, photo]);
 };
 
 const usersRepository = {
