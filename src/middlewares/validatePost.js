@@ -15,4 +15,4 @@ export async function validatePost(req, res, next) {
   }
   next();
 }
-// git add . && git commit -m "feat: putting the user picture on the jwt"
+
