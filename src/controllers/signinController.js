@@ -7,7 +7,7 @@ export async function userSignin(req, res) {
     const EXP_TIME = process.env.TOKEN_TIME;
 
     const token = jwt.sign(
-      { userId: user.id, email: user.email, photo: user.photo },
+      { userId: user.id, email: user.email },
       JWT_KEY,
       {
         expiresIn: EXP_TIME,
