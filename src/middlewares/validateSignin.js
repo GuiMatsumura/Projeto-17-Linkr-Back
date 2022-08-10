@@ -1,7 +1,17 @@
 import bcrypt from 'bcrypt';
 import usersRepository from '../repositories/userRepository.js';
+import { signinSchema } from '../schemas/signinSchema.js';
 
 export async function validateSignin(req, res, next) {
+
+    const validation = signinSchema.validate(req.body)
+
+    if (validation.error) {
+
+        res.status(422).send("Email ou password inválido");
+        return;
+
+    }
 
     const { email, password } = req.body;
 

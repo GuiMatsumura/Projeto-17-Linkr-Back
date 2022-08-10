@@ -4,9 +4,14 @@ export async function userSignin(req, res) {
 
     try {
 
-        //const token = jwt.sign(req.body.email, process.env.JWT_SECRET);
+        const JWT_KEY = process.env.JWT_SECRET;
+        const EXP_TIME = process.env.TOKEN_TIME;
 
-        res.sendStatus(200);
+        const { email } = req.body;
+
+        const token = jwt.sign({ email }, JWT_KEY, { expiresIn: EXP_TIME });
+
+        res.status(200).send({ token });
 
     } catch (error) {
 
