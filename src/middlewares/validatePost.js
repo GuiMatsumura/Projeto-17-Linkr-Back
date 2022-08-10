@@ -1,5 +1,5 @@
-import postSchema from "../schemas/postSchema";
-
+import postSchema from "../schemas/postSchema.js";
+import jwt from "../token/jwt.js";
 export async function validatePost(req, res, next) {
   const { authorization } = req.headers;
   const token = authorization?.replace("Bearer ", "");
@@ -13,6 +13,6 @@ export async function validatePost(req, res, next) {
   if (!verified) {
     return res.status(401).send("Token inválido!");
   }
+  res.locals.verified = verified;
   next();
 }
-
