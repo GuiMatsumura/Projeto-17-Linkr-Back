@@ -1,4 +1,4 @@
-import jwt from "jw"
+import jwt from "jsonwebtoken";
 
 export async function userSignin(req, res) {
 
