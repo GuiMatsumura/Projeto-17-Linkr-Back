@@ -31,6 +31,8 @@ export async function validateSignin(req, res, next) {
 
     }
 
+    res.locals.infoUser = infoUser[0];
+
     next();
 
 }

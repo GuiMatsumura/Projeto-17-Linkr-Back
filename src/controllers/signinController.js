@@ -6,10 +6,10 @@ export async function userSignin(req, res) {
 
         const JWT_KEY = process.env.JWT_SECRET;
         const EXP_TIME = process.env.TOKEN_TIME;
+        
+        const { infoUser } = res.locals;
 
-        const { email } = req.body;
-
-        const token = jwt.sign({ email }, JWT_KEY, { expiresIn: EXP_TIME });
+        const token = jwt.sign(infoUser, JWT_KEY, { expiresIn: EXP_TIME });
 
         res.status(200).send({ token });
 
