@@ -7,7 +7,7 @@ export async function newPost(req, res) {
   };
   try {
     await postRepository.createPost(body);
-    res.status(201).send(body);
+    res.status(201).send({ ...body, userPhoto: verified.photo });
   } catch (error) {
     console.log(error);
     res.sendStatus(500);

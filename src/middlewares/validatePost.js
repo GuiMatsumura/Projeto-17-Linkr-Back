@@ -5,7 +5,6 @@ export async function validatePost(req, res, next) {
   const token = authorization?.replace("Bearer ", "");
   const verified = jwt.verifyToken(token);
   const { error } = postSchema.validate(req.body);
-  console.log(verified);
   if (error) {
     console.log(error);
     return res.status(422).send("Corpo inválido");
