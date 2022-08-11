@@ -16,6 +16,7 @@ CREATE TABLE "posts" (
 	"userId" int NOT NULL,
 	"url" TEXT NOT NULL,
 	"description" TEXT,
+	"createdAt" TIMESTAMP NOT NULL,
 	CONSTRAINT "posts_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE

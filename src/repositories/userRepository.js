@@ -24,10 +24,35 @@ async function getUserByUsername(username) {
 
 };
 
+async function getUserProfile(id) {
+  const query = `
+  SELECT users.id, users.username, users.photo, posts.id AS "idPost", posts.url, posts.description
+  FROM users
+  JOIN posts
+  ON posts."userId" = users.id
+  WHERE users.id = $1
+  `;
+
+  return connection.query(query, [id]);
+}
+
+async function getLikes(id){
+  const query = `
+  SELECT COUNT(likes."userId") AS "numberOfLikes", likes."postId"
+  FROM likes
+  WHERE likes."userId" = $1
+  GROUP BY likes."postId"
+  `
+
+  return connection.query(query, [id])
+}
+
 const usersRepository = {
   createUser,
   getUserByEmail,
-  getUserByUsername
+  getUserByUsername,
+  getUserProfile,
+  getLikes
 };
 
 export default usersRepository;
