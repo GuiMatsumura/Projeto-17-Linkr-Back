@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.post("/signup", validadeSignup, userSignup);
 router.post("/signin", validateSignin, userSignin);
-router.get("/user/:id", getUserById)
+router.get("/user/:id", getUserById) //botar a verificação de token
 
 export default router;

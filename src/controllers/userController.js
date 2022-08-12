@@ -12,6 +12,7 @@ export async function getUserById(req, res) {
 
     res.status(200).send({ profile: profile, posts: [...likes] })
   } catch (error) {
-
+    res.sendStatus(500);
+    console.error(error);
   }
 }
