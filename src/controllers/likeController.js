@@ -1,6 +1,6 @@
-import likeRepository from "../repositories/likeRepository";
+import likeRepository from "../repositories/likeRepository.js";
 
-export async function newPost(req, res) {
+export async function postLike(req, res) {
 
     try {
 
