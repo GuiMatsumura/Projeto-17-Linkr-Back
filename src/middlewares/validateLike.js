@@ -3,11 +3,9 @@ import jwt from "../token/jwt.js";
 
 export async function validateLike(req, res, next) {
 
-  const { authorization } = req.headers;
-  const token = authorization?.replace("Bearer ", "");
-  const verified = jwt.verifyToken(token);
-
   const { postId, like } = req.body;
+
+  const { verified } = res.locals;
 
   const payload = [verified.id, postId]
 
@@ -25,6 +23,16 @@ export async function validateLike(req, res, next) {
     return;
 
   }
+
+  next();
+
+}
+
+export async function validateLikeAuthorizathion(req, res, next) {
+
+  const { authorization } = req.headers;
+  const token = authorization?.replace("Bearer ", "");
+  const verified = jwt.verifyToken(token);
 
   if (!verified) {
 
