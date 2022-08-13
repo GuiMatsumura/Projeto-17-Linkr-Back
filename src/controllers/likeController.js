@@ -20,3 +20,24 @@ export async function postLike(req, res) {
 
     }
 }
+
+export async function deleteLike(req, res) {
+
+    try {
+
+        const { postId } = req.body;
+        const { verified } = res.locals;
+
+        const body = [verified.id, postId];
+
+        await likeRepository.removeLike(body);
+
+        res.status(201).send("Descurtido!");
+
+    } catch (error) {
+
+        console.log(error);
+        res.sendStatus(500);
+
+    }
+}

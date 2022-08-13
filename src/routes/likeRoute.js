@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { validateLike } from "../middlewares/validateLike.js";
-import { postLike } from "../controllers/likeController.js";
+import { validateDeslike, validateLike } from "../middlewares/validateLike.js";
+import { deleteLike, postLike } from "../controllers/likeController.js";
 
 const router = Router();
 
-router.post("/post", validateLike, postLike);
+router.post("/likes", validateLike, postLike);
+router.delete("/likes", validateDeslike, deleteLike);
 
 export default router;
