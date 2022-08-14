@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import chalk from "chalk";
+
 import router from "./routes/routesIndex.js";
 
 dotenv.config();
