@@ -39,7 +39,7 @@ export async function updatePost(req, res) {
   const { description, postId } = req.body;
   try {
     await postRepository.updatePost(description, postId);
-    return res.status(200).send(...req.body);
+    return res.status(200).send(req.body);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
