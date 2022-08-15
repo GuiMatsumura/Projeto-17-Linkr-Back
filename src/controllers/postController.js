@@ -2,7 +2,7 @@ import postRepository from '../repositories/postRepository.js';
 export async function newPost(req, res) {
   const { verified } = res.locals;
   const body = {
-    userId: verified.userId,
+    userId: verified.id,
     ...req.body,
   };
   try {
