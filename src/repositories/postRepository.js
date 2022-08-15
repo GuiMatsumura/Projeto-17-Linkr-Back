@@ -1,4 +1,5 @@
 import connection from "../dbStrategy/postgres.js";
+import dayjs from "dayjs";
 
 function createPost(body) {
   const now = dayjs();
@@ -34,10 +35,18 @@ function postHashtag(hashtagId, postId) {
     [hashtagId, postId]
   );
 }
+
+function updatePost(description, postId) {
+  return connection.query(`UPDATE posts SET description = $1 WHERE id = $2`, [
+    description,
+    postId,
+  ]);
+}
 export default {
   createPost,
   searchHashtag,
   findHashtag,
   insertHashtag,
   postHashtag,
+  updatePost
 };
