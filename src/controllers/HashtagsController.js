@@ -1,9 +1,9 @@
 import getTimelineRepository from '../repositories/timelineRepository.js';
 
 export async function getPostByHashtag(req, res) {
-  const obj = req.body;
+  const { hashtag } = req.params;
   try {
-    const post = await getTimelineRepository.getHashtagPost(obj);
+    const post = await getTimelineRepository.getHashtagPost(hashtag);
     res.status(200).send(post.rows);
   } catch (error) {
     res.status(500).send(error);

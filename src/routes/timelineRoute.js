@@ -6,9 +6,8 @@ import { getPostByHashtag } from '../controllers/HashtagsController.js';
 
 const router = Router();
 
-// router.get('/timeline', validateToken, getTimeline);
 router.get('/timeline', getTimeline);
 router.get('/trending', getTrending);
-router.get('/hashtag', getPostByHashtag);
+router.get('/hashtag/:hashtag', getPostByHashtag);
 
 export default router;
