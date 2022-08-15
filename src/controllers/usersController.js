@@ -1,4 +1,4 @@
-import usersRepository from "../repositories/userRepository.js";
+import usersRepository from '../repositories/userRepository.js';
 export async function getUsers(req, res) {
   try {
     const { rows: response } = await usersRepository.getUsers();

@@ -1,5 +1,5 @@
-import bcrypt from "bcrypt";
-import connection from "../dbStrategy/postgres.js";
+import bcrypt from 'bcrypt';
+import connection from '../dbStrategy/postgres.js';
 
 async function getUserByEmail(email) {
   return connection.query(`SELECT * FROM users WHERE email = $1`, [email]);
@@ -17,7 +17,7 @@ async function createUser(email, username, password, photo) {
 }
 
 async function getUserByUsername(username) {
-  const query = "SELECT email FROM users WHERE username = $1";
+  const query = 'SELECT email FROM users WHERE username = $1';
 
   return connection.query(query, [username]);
 }
