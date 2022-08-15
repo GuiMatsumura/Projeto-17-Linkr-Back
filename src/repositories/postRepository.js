@@ -24,9 +24,10 @@ function findHashtag(hashtag) {
 }
 
 function insertHashtag(hashtag) {
-  return connection.query(`INSERT INTO hashtags (name) VALUES ($1) RETURNING id`, [
-    hashtag[0],
-  ]);
+  return connection.query(
+    `INSERT INTO hashtags (name) VALUES ($1) RETURNING id`,
+    [hashtag[0]]
+  );
 }
 function postHashtag(hashtagId, postId) {
   return connection.query(
