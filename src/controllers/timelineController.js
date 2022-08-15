@@ -5,7 +5,6 @@ export async function getTimeline(req, res) {
     const posts = await getTimelineRepository.getPosts();
     res.status(200).send(posts.rows);
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .send(

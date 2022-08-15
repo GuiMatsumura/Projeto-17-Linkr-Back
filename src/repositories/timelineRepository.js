@@ -6,4 +6,15 @@ async function getPosts() {
   );
 }
 
-export default { getPosts };
+async function getTrending() {
+  return connection.query('SELECT * FROM hashtags');
+}
+
+async function getHashtagPost(obj) {
+  return connection.query(
+    'SELECT users.username AS name, users.photo AS foto, posts.description, posts.url, hashtags.name AS "hashtagName" FROM posts JOIN users ON users.id = posts."userId" JOIN "hashtagsPost" ON "hashtagsPost"."postId" = posts.id JOIN hashtags ON "hashtagsPost"."hashtagId"  = hashtags.id WHERE hashtags.name = $1',
+    [obj.hashtag]
+  );
+}
+
+export default { getPosts, getTrending, getHashtagPost };
