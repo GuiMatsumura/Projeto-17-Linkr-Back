@@ -1,4 +1,4 @@
-import likeRepository from "../repositories/likeRepository.js";
+import likeRepository from '../repositories/likeRepository.js';
 
 export async function updateLike(req, res) {
 

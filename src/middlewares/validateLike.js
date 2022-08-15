@@ -1,5 +1,5 @@
-import likeRepository from "../repositories/likeRepository.js";
-import jwt from "../token/jwt.js";
+import likeRepository from '../repositories/likeRepository.js';
+import jwt from '../token/jwt.js';
 
 export async function validateLike(req, res, next) {
 
@@ -12,14 +12,11 @@ export async function validateLike(req, res, next) {
   const { rows: likeDb } = await likeRepository.getLike(payload);
 
   if (!like && likeDb[0]) {
-
-    return res.status(409).send("Post já curtido ou não existe!");
-
+    return res.status(409).send('Post já curtido ou não existe!');
   }
 
   if (like && !likeDb[0]) {
-
-    res.status(409).send("Post inexistente!");
+    res.status(409).send('Post inexistente!');
     return;
 
   }
@@ -43,5 +40,4 @@ export async function validateLikeAuthorizathion(req, res, next) {
   res.locals.verified = verified;
 
   next();
-
 }
