@@ -1,4 +1,7 @@
 import postRepository from "../repositories/postRepository.js";
+import { metadataMiddleware } from "../middlewares/urlMetadata.js";
+import connection from "../dbStrategy/postgres.js";
+
 export async function newPost(req, res) {
   const { verified } = res.locals;
   const body = {
@@ -9,7 +12,10 @@ export async function newPost(req, res) {
     const { rows: searchHashtag } = await postRepository.searchHashtag(body);
 
     if (searchHashtag.length === 0) {
-      await postRepository.createPost(body);
+      const { rows: idPost } = await postRepository.createPost(body);
+
+      await metadataMiddleware(body.url, idPost[0].id);
+
       return res.status(201).send({ ...body, userPhoto: verified.photo });
     }
 
@@ -23,11 +29,23 @@ export async function newPost(req, res) {
       );
       const { rows: idPost } = await postRepository.createPost(body);
       await postRepository.postHashtag(hashtagId[0].id, idPost[0].id);
+
+      const { rows: lastPost } = await connection.query(
+        'SELECT * FROM posts ORDER BY "createdAt" DESC LIMIT 1'
+      );
+      await metadataMiddleware(body.url, lastPost[0].id);
+
       return res.status(201).send({ ...body, userPhoto: verified.photo });
     }
 
     const { rows: idPost } = await postRepository.createPost(body);
     await postRepository.postHashtag(findHashtag[0].id, idPost[0].id);
+
+    const { rows: lastPost } = await connection.query(
+      'SELECT * FROM posts ORDER BY "createdAt" DESC LIMIT 1'
+    );
+    await metadataMiddleware(body.url, lastPost[0].id);
+
     return res.status(201).send({ ...body, userPhoto: verified.photo });
   } catch (error) {
     console.log(error);
