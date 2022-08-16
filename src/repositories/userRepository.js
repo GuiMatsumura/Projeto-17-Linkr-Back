@@ -49,7 +49,7 @@ async function getPostsByUserId(id){
 }
 
 
-}
+
 async function getUsers() {
   return connection.query(
     `SELECT id AS "userId", username, email, photo from users`
@@ -61,8 +61,8 @@ const usersRepository = {
   getUserByEmail,
   getUserByUsername,
   getUserProfile,
-  getPostsByUserId
-  getUsers,
+  getPostsByUserId,
+  getUsers
 };
 
 export default usersRepository;
