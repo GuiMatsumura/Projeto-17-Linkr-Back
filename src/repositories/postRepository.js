@@ -1,6 +1,15 @@
 import connection from "../dbStrategy/postgres.js";
 import dayjs from "dayjs";
 
+async function deletePostById(id) {
+  const query = `
+  DELETE FROM posts WHERE id = $1
+  `;
+
+  return connection.query(query, [id]);
+};
+
+
 function createPost(body) {
   const now = dayjs();
   return connection.query(
@@ -48,5 +57,6 @@ export default {
   findHashtag,
   insertHashtag,
   postHashtag,
-  updatePost
+  updatePost,
+  deletePostById
 };

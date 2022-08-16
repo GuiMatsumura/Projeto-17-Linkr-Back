@@ -2,6 +2,18 @@ import postRepository from "../repositories/postRepository.js";
 import { metadataMiddleware } from "../middlewares/urlMetadata.js";
 import connection from "../dbStrategy/postgres.js";
 
+export async function deletePost(req, res) {
+  const { id } = req.params
+
+  try {
+    await postRepository.deletePostById(id);
+    res.status(200).send({message: "Post deletado com sucesso!"})
+  } catch (error) {
+    res.sendStatus(500);
+    console.error(error);
+  }
+}
+
 export async function newPost(req, res) {
   const { verified } = res.locals;
   const body = {

@@ -20,16 +20,48 @@ async function getUserByUsername(username) {
   const query = 'SELECT email FROM users WHERE username = $1';
 
   return connection.query(query, [username]);
+
+};
+
+async function getUserProfile(id) {
+  const query = `
+  SELECT users.id, users.username, users.photo 
+  FROM users
+  WHERE users.id = $1
+  `;
+
+  return connection.query(query, [id]);
+}
+
+
+async function getPostsByUserId(id){
+  const query = `
+  SELECT posts."userId" AS "postOwner", posts.id AS "postLiked",  COUNT(likes."userId") AS "numberOfLikes",
+  posts.url, posts.description
+  FROM posts
+  JOIN likes
+  ON posts.id = likes."postId"
+  WHERE posts."userId" = $1
+  GROUP BY posts.id
+  `
+
+  return connection.query(query, [id])
+}
+
+
 }
 async function getUsers() {
   return connection.query(
     `SELECT id AS "userId", username, email, photo from users`
   );
 }
+
 const usersRepository = {
   createUser,
   getUserByEmail,
   getUserByUsername,
+  getUserProfile,
+  getPostsByUserId
   getUsers,
 };
 
