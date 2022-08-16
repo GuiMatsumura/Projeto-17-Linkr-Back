@@ -2,7 +2,7 @@ import connection from '../dbStrategy/postgres.js';
 
 async function getPosts() {
   return connection.query(
-    'SELECT posts.id, users.photo AS foto, users.username AS name, users.id AS "userId", posts.description, posts.url FROM posts JOIN users ON users.id = posts."userId" ORDER BY posts."createdAt" DESC LIMIT 20'
+    'SELECT posts.id, users.photo AS foto, users.username AS name, users.id AS "userId", posts.description, posts.url, metadata.title AS "metadataTitle", metadata.img AS "metadataImg", metadata.description AS "metadataDescription" FROM posts JOIN users ON users.id = posts."userId" JOIN metadata ON metadata."postId" = posts.id ORDER BY posts."createdAt" DESC LIMIT 20'
   );
 }
 
