@@ -49,7 +49,6 @@ async function getPostsByUserId(id){
 }
 
 
-
 async function getUsers() {
   return connection.query(
     `SELECT id AS "userId", username, email, photo from users`
