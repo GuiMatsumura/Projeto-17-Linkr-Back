@@ -4,11 +4,12 @@ import { userSignin } from '../controllers/signinController.js';
 import { getUserById } from '../controllers/userController.js';
 import { validadeSignup } from '../middlewares/validateSignup.js';
 import { validateSignin } from '../middlewares/validateSignin.js';
-
+import { getUsers } from '../controllers/usersController.js';
 const router = express.Router();
 
-router.post("/signup", validadeSignup, userSignup);
-router.post("/signin", validateSignin, userSignin);
-router.get("/user/:id", getUserById) //botar a verificação de token
+
+router.post('/signup', validadeSignup, userSignup);
+router.post('/signin', validateSignin, userSignin);
+router.get("/user/:id", getUserById)
 
 export default router;
