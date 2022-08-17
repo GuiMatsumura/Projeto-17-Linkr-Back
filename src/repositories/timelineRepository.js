@@ -16,7 +16,12 @@ async function getTrending() {
 
 async function getHashtagPost(hashtag) {
   return connection.query(
-    'SELECT users.username AS name, users.photo AS foto, posts.description, posts.url, hashtags.name AS "hashtagName" FROM posts JOIN users ON users.id = posts."userId" JOIN "hashtagsPost" ON "hashtagsPost"."postId" = posts.id JOIN hashtags ON "hashtagsPost"."hashtagId"  = hashtags.id WHERE hashtags.name = $1',
+    `SELECT users.username AS name, users.photo AS foto, posts.description, posts.url, posts.id, hashtags.name AS "hashtagName", metadata.title AS "metadataTitle", 
+    metadata.description AS "metadataDescription", metadata.img AS "metadataImg"
+    FROM posts JOIN users ON users.id = posts."userId" 
+    JOIN "hashtagsPost" ON "hashtagsPost"."postId" = posts.id 
+    JOIN metadata ON posts.id = metadata."postId"
+    JOIN hashtags ON "hashtagsPost"."hashtagId"  = hashtags.id WHERE hashtags.name = $1`,
     [hashtag]
   );
 }
