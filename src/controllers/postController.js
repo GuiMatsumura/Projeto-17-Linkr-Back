@@ -21,9 +21,9 @@ export async function newPost(req, res) {
     ...req.body,
   };
   try {
-    const { rows: searchHashtag } = await postRepository.searchHashtag(body);
-    console.log(searchHashtag);
-    if (searchHashtag.length === 0) {
+    const re = /#(?:\w+ ?\w+(?= #|$)|\w+\b)/;
+    const searchHashtag = body.description.match(re);
+    if (!searchHashtag) {
       const { rows: idPost } = await postRepository.createPost(body);
 
       await metadataMiddleware(body.url, idPost[0].id);
@@ -32,20 +32,18 @@ export async function newPost(req, res) {
     }
 
     const { rows: findHashtag } = await postRepository.findHashtag(
-      searchHashtag
+      searchHashtag[0].slice(1)
     );
 
     if (findHashtag.length === 0) {
       const { rows: hashtagId } = await postRepository.insertHashtag(
-        searchHashtag[0].hashtag
+        searchHashtag[0].slice(1)
       );
       const { rows: idPost } = await postRepository.createPost(body);
+
       await postRepository.postHashtag(hashtagId[0].id, idPost[0].id);
 
-      const { rows: lastPost } = await connection.query(
-        'SELECT * FROM posts ORDER BY "createdAt" DESC LIMIT 1'
-      );
-      await metadataMiddleware(body.url, lastPost[0].id);
+      await metadataMiddleware(body.url, idPost[0].id);
 
       return res.status(201).send({ ...body, userPhoto: verified.photo });
     }
@@ -53,10 +51,7 @@ export async function newPost(req, res) {
     const { rows: idPost } = await postRepository.createPost(body);
     await postRepository.postHashtag(findHashtag[0].id, idPost[0].id);
 
-    const { rows: lastPost } = await connection.query(
-      'SELECT * FROM posts ORDER BY "createdAt" DESC LIMIT 1'
-    );
-    await metadataMiddleware(body.url, lastPost[0].id);
+    await metadataMiddleware(body.url, idPost[0].id);
 
     return res.status(201).send({ ...body, userPhoto: verified.photo });
   } catch (error) {

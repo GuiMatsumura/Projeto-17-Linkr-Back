@@ -18,24 +18,23 @@ function createPost(body) {
   );
 }
 
-function searchHashtag(body) {
-  console.log(body);
-  return connection.query(
-    `SELECT id AS "postId", REGEXP_MATCHES($1, '#([A-Za-z0-9_]+)', 'g') AS hashtag FROM posts WHERE posts.description = $2`,
-    [body.description, body.description]
-  );
-}
+// function searchHashtag(body) {
+//   console.log(body);
+//   return connection.query(
+//     `SELECT id AS "postId", REGEXP_MATCHES($1, '#([A-Za-z0-9_]+)', 'g') AS hashtag FROM posts WHERE posts.description = $2`,
+//     [body.description, body.description]
+//   );
+// }
 
 function findHashtag(hashtag) {
-  return connection.query(`SELECT * FROM hashtags WHERE name = $1`, [
-    hashtag[0].hashtag[0],
-  ]);
+  return connection.query(`SELECT * FROM hashtags WHERE name = $1`, [hashtag]);
 }
 
 function insertHashtag(hashtag) {
+  console.log(hashtag);
   return connection.query(
     `INSERT INTO hashtags (name) VALUES ($1) RETURNING id`,
-    [hashtag[0]]
+    [hashtag]
   );
 }
 function postHashtag(hashtagId, postId) {
@@ -53,7 +52,6 @@ function updatePost(description, postId) {
 }
 export default {
   createPost,
-  searchHashtag,
   findHashtag,
   insertHashtag,
   postHashtag,
