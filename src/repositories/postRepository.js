@@ -7,8 +7,7 @@ async function deletePostById(id) {
   `;
 
   return connection.query(query, [id]);
-};
-
+}
 
 function createPost(body) {
   const now = dayjs();
@@ -20,6 +19,7 @@ function createPost(body) {
 }
 
 function searchHashtag(body) {
+  console.log(body);
   return connection.query(
     `SELECT id AS "postId", REGEXP_MATCHES($1, '#([A-Za-z0-9_]+)', 'g') AS hashtag FROM posts WHERE posts.description = $2`,
     [body.description, body.description]
@@ -58,5 +58,5 @@ export default {
   insertHashtag,
   postHashtag,
   updatePost,
-  deletePostById
+  deletePostById,
 };

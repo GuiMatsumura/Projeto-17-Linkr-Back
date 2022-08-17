@@ -3,11 +3,11 @@ import { metadataMiddleware } from "../middlewares/urlMetadata.js";
 import connection from "../dbStrategy/postgres.js";
 
 export async function deletePost(req, res) {
-  const { id } = req.params
+  const { id } = req.params;
 
   try {
     await postRepository.deletePostById(id);
-    res.status(200).send({message: "Post deletado com sucesso!"})
+    res.status(200).send({ message: "Post deletado com sucesso!" });
   } catch (error) {
     res.sendStatus(500);
     console.error(error);
@@ -22,7 +22,7 @@ export async function newPost(req, res) {
   };
   try {
     const { rows: searchHashtag } = await postRepository.searchHashtag(body);
-
+    console.log(searchHashtag);
     if (searchHashtag.length === 0) {
       const { rows: idPost } = await postRepository.createPost(body);
 

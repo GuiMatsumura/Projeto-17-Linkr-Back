@@ -1,13 +1,17 @@
-import connection from '../dbStrategy/postgres.js';
+import connection from "../dbStrategy/postgres.js";
 
 async function getPosts() {
   return connection.query(
-    'SELECT posts.id, users.photo AS foto, users.username AS name, users.id AS "userId", posts.description, posts.url FROM posts JOIN users ON users.id = posts."userId" ORDER BY posts."createdAt" DESC LIMIT 20'
+    `SELECT posts.id, users.photo AS foto, users.username AS name, users.id AS "userId", posts.description, posts.url, metadata.title AS "metadataTitle", 
+      metadata.description AS "metadataDescription", metadata.img AS "metadataImg"
+      FROM posts JOIN users ON users.id = posts."userId" 
+      JOIN metadata ON posts.id = metadata."postId"
+      ORDER BY posts."createdAt" DESC LIMIT 20`
   );
 }
 
 async function getTrending() {
-  return connection.query('SELECT * FROM hashtags ORDER BY id DESC LIMIT 10 ');
+  return connection.query("SELECT * FROM hashtags ORDER BY id DESC LIMIT 10 ");
 }
 
 async function getHashtagPost(hashtag) {
