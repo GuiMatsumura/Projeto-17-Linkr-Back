@@ -21,8 +21,9 @@ export async function newPost(req, res) {
     ...req.body,
   };
   try {
-    const re = /#(?:\w+ ?\w+(?= #|$)|\w+\b)/;
-    const searchHashtag = body.description.match(re);
+    const re = /#(?:\w+\w+(?=#|$)|\w+\b)/g;
+    const searchHashtag = [...body.description.matchAll(re)];
+    
     if (!searchHashtag) {
       const { rows: idPost } = await postRepository.createPost(body);
 
@@ -32,12 +33,12 @@ export async function newPost(req, res) {
     }
 
     const { rows: findHashtag } = await postRepository.findHashtag(
-      searchHashtag[0].slice(1)
+      searchHashtag
     );
 
     if (findHashtag.length === 0) {
       const { rows: hashtagId } = await postRepository.insertHashtag(
-        searchHashtag[0].slice(1)
+        searchHashtag
       );
       const { rows: idPost } = await postRepository.createPost(body);
 
