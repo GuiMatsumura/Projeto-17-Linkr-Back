@@ -48,6 +48,14 @@ async function getPostsByUserId(id){
   return connection.query(query, [id])
 }
 
+async function getPostsFromUser (id){
+  const query = `
+  SELECT * FROM posts WHERE "userId" = $1
+  `
+
+  return connection.query(query, [id])
+}
+
 
 async function getUsers() {
   return connection.query(
@@ -60,6 +68,7 @@ const usersRepository = {
   getUserByEmail,
   getUserByUsername,
   getUserProfile,
+  getPostsFromUser,
   getPostsByUserId,
   getUsers
 };
