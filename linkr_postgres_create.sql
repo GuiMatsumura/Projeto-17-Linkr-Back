@@ -63,6 +63,12 @@ CREATE TABLE "comments"(
 	"postId" INT REFERENCES posts(id) NOT NULL ON DELETE CASCADE, 
 	"userId" INT REFERENCES users(id) NOT NULL ON DELETE CASCADE,
 	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "followers"(
+	"id" SERIAL PRIMARY KEY NOT NULL,
+	"accountFollowed" INT REFERENCES users(id) NOT NULL,
+	"whoFollowed" INT REFERENCES users(id) NOT NULL,
 )
 
 ALTER TABLE "metadata" ADD CONSTRAINT "metadata_fk0" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE CASCADE;

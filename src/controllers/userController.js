@@ -21,19 +21,19 @@ export async function getUserById(req, res) {
 
 export async function followUserById (req, res){
   const accountFollowed = req.params.id;
-  const whoFollowed = req.body;
+  const whoFollowed = req.body.id;
   
 
   try {
-    await userRepository.followUser(accountFollowed, whoFollowed)
+    /* await userRepository.followUser(accountFollowed, whoFollowed); */
     const {rows: follower} = await userRepository.isUserFollowed(whoFollowed);
 
-    console.log(follower)
+    /* console.log(follower) */
     /* if(follower.length === 0){
       return 
     } */
 
-    res.sendStatus(200);
+    res.status(200).send(follower);
   } catch (error) {
     res.sendStatus(500);
     console.error(error);
