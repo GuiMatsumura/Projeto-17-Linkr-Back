@@ -8,9 +8,7 @@ CREATE TABLE "users" (
 ) WITH (
   OIDS=FALSE
 );
-​
-​
-​
+
 CREATE TABLE "posts" (
 	"id" serial NOT NULL,
 	"userId" int NOT NULL,
@@ -21,9 +19,7 @@ CREATE TABLE "posts" (
 ) WITH (
   OIDS=FALSE
 );
-​
-​
-​
+
 CREATE TABLE "hashtags" (
 	"id" serial NOT NULL,
 	"name" varchar(100) NOT NULL,
@@ -31,9 +27,7 @@ CREATE TABLE "hashtags" (
 ) WITH (
   OIDS=FALSE
 );
-​
-​
-​
+
 CREATE TABLE "likes" (
 	"id" serial NOT NULL,
 	"userId" int NOT NULL,
@@ -42,9 +36,7 @@ CREATE TABLE "likes" (
 ) WITH (
   OIDS=FALSE
 );
-​
-​
-​
+
 CREATE TABLE "hashtagsPost" (
 	"id" serial NOT NULL,
 	"hashtagId" int NOT NULL,
@@ -53,18 +45,11 @@ CREATE TABLE "hashtagsPost" (
 ) WITH (
   OIDS=FALSE
 );
-​
-​
-​
-​
+
 ALTER TABLE "posts" ADD CONSTRAINT "posts_fk0" FOREIGN KEY ("userId") REFERENCES "users"("id");
-​
-​
+
 ALTER TABLE "likes" ADD CONSTRAINT "likes_fk0" FOREIGN KEY ("userId") REFERENCES "users"("id");
 ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("id");
-​
+
 ALTER TABLE "hashtagsPost" ADD CONSTRAINT "hashtagsPost_fk0" FOREIGN KEY ("hashtagId") REFERENCES "hashtags"("id");
 ALTER TABLE "hashtagsPost" ADD CONSTRAINT "hashtagsPost_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("id");
-​
-​
-​

@@ -27,6 +27,7 @@ export async function validateLike(req, res, next) {
 
 export async function validateLikeAuthorizathion(req, res, next) {
 
+  
   const { authorization } = req.headers;
   const token = authorization?.replace("Bearer ", "");
   const verified = jwt.verifyToken(token);
@@ -40,4 +41,5 @@ export async function validateLikeAuthorizathion(req, res, next) {
   res.locals.verified = verified;
 
   next();
+
 }
