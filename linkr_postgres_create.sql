@@ -46,10 +46,21 @@ CREATE TABLE "hashtagsPost" (
   OIDS=FALSE
 );
 
+CREATE TABLE "metadata" (
+	"id" serial NOT NULL UNIQUE,
+	"postId" integer NOT NULL,
+	"title" TEXT NOT NULL,
+	"img" TEXT NOT NULL,
+	"description" TEXT NOT NULL,
+	CONSTRAINT "metadata_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+ALTER TABLE "metadata" ADD CONSTRAINT "metadata_fk0" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE CASCADE;
 ALTER TABLE "posts" ADD CONSTRAINT "posts_fk0" FOREIGN KEY ("userId") REFERENCES "users"("id");
-
 ALTER TABLE "likes" ADD CONSTRAINT "likes_fk0" FOREIGN KEY ("userId") REFERENCES "users"("id");
-ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("id");
-
+ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE CASCADE;
 ALTER TABLE "hashtagsPost" ADD CONSTRAINT "hashtagsPost_fk0" FOREIGN KEY ("hashtagId") REFERENCES "hashtags"("id");
-ALTER TABLE "hashtagsPost" ADD CONSTRAINT "hashtagsPost_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("id");
+ALTER TABLE "hashtagsPost" ADD CONSTRAINT "hashtagsPost_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE CASCADE;
+
