@@ -39,7 +39,7 @@ async function getPostsByUserId(id){
   SELECT posts."userId" AS "postOwner", posts.id AS "postLiked",  COUNT(likes."userId") AS "numberOfLikes",
   posts.url, posts.description
   FROM posts
-  JOIN likes
+  LEFT JOIN likes
   ON posts.id = likes."postId"
   WHERE posts."userId" = $1
   GROUP BY posts.id
@@ -47,15 +47,6 @@ async function getPostsByUserId(id){
 
   return connection.query(query, [id])
 }
-
-async function getPostsFromUser (id){
-  const query = `
-  SELECT * FROM posts WHERE "userId" = $1
-  `
-
-  return connection.query(query, [id])
-}
-
 
 async function getUsers() {
   return connection.query(
@@ -68,7 +59,6 @@ const usersRepository = {
   getUserByEmail,
   getUserByUsername,
   getUserProfile,
-  getPostsFromUser,
   getPostsByUserId,
   getUsers
 };
