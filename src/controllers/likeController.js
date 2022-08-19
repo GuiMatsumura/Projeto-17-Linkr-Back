@@ -31,9 +31,9 @@ export async function getLikePostById(req, res) {
 
     try {
 
-        const { postId } = req.body;
+        const { ID_POST } = req.params;
 
-        const body = [postId];
+        const body = [ID_POST];
 
         const { rows: likePost } = await likeRepository.getLikePost(body);
 
@@ -45,4 +45,27 @@ export async function getLikePostById(req, res) {
         res.sendStatus(500);
 
     }
+}
+
+export async function getLike(req, res) {
+
+    try {
+
+        const { ID_POST } = req.params;
+
+        const { verified } = res.locals;
+
+        const payload = [verified.id, ID_POST];
+
+        const { rows: likePost } = await likeRepository.getLike(payload);
+
+        res.status(200).send(likePost);
+
+    } catch (error) {
+
+        console.log(error);
+        res.sendStatus(500);
+
+    }
+
 }
