@@ -25,7 +25,6 @@ export async function getFollowing(req, res) {
   const { userId } = req.params;
   try {
     const { rows: following } = await commentRepository.getFollowing(userId);
-    console.log(following);
     res.status(200).send(following);
   } catch (error) {
     console.log(error);
