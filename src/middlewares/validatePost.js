@@ -40,6 +40,7 @@ export function validadeRepost(req, res, next) {
   const { error } = repostSchema.validate(req.body);
 
   if (error) {
+    console.log(error)
     return res.status(422).send(error.details);
   }
   if (!verified) {
