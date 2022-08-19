@@ -58,7 +58,7 @@ async function getUsers() {
 async function followUser(accountFollowed, whoFollowed){
   const query = `INSERT INTO followers ("accountFollowed", "whoFollowed") VALUES ($1, $2)`
 
-  return connection.query(query, [accountFollowed], [whoFollowed]);
+  return connection.query(query, [accountFollowed, whoFollowed]);
 }
 
 async function isUserFollowed (whoFollowed){

@@ -25,7 +25,7 @@ export async function followUserById (req, res){
   
 
   try {
-    /* await userRepository.followUser(accountFollowed, whoFollowed); */
+    await userRepository.followUser(accountFollowed, whoFollowed);
     const {rows: follower} = await userRepository.isUserFollowed(whoFollowed);
 
     /* console.log(follower) */
