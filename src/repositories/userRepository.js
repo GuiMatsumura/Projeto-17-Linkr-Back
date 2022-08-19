@@ -54,6 +54,7 @@ async function getPostsByUserId(id) {
   JOIN metadata ON posts.id = metadata."postId"
   LEFT JOIN reposts ON reposts."postId"=posts.id
   LEFT JOIN comments on posts.id = comments."postId"
+  WHERE posts."userId" = $1
   GROUP BY posts.id, users.id, metadata.title, metadata.description, metadata.img
 
   UNION
