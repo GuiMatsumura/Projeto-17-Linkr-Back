@@ -23,7 +23,7 @@ export async function newPost(req, res) {
   try {
     const re = /#(?:\w+\w+(?=#|$)|\w+\b)/g;
     const searchHashtag = [...body.description.matchAll(re)];
-    
+
     if (!searchHashtag) {
       const { rows: idPost } = await postRepository.createPost(body);
 
@@ -66,6 +66,17 @@ export async function updatePost(req, res) {
   try {
     await postRepository.updatePost(description, postId);
     return res.status(200).send(req.body);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+}
+
+export async function newRepost(req, res) {
+  const { postId, userId } = req.body;
+  try {
+    await postRepository.addRepost(postId, userId);
+    return res.status(201);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);

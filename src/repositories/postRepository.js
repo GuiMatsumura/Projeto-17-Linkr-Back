@@ -43,6 +43,14 @@ function updatePost(description, postId) {
     postId,
   ]);
 }
+
+function addRepost(postId, userId) {
+  const now = dayjs();
+  return connection.query(
+    `INSERT INTO reposts ("postId", "userId", "createdAt") VALUES ($1, $2, $3)`,
+    [postId, userId, now]
+  );
+}
 export default {
   createPost,
   findHashtag,
@@ -50,4 +58,5 @@ export default {
   postHashtag,
   updatePost,
   deletePostById,
+  addRepost,
 };

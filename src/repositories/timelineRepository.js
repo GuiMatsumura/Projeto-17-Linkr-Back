@@ -2,7 +2,7 @@ import connection from "../dbStrategy/postgres.js";
 
 async function getPosts() {
   return connection.query(
-    `SELECT 
+    `   SELECT 
     users.id as "userId",
     users.username AS name,
     users."photo" as photo, 
@@ -11,15 +11,17 @@ async function getPosts() {
     metadata.description AS "metadataDescription", 
     metadata.img AS "metadataImg", 
     COUNT(comments."postId") AS "numberOfComments",
+	COUNT(reposts.id) as "repostCount",
     posts.url,
     posts.id as "postId",
     NULL as "repostedByName",
-    NULL as "repostedBy",
+    NULL as "repostedById",
     posts."createdAt"
     FROM posts
     LEFT JOIN users ON users.id=posts."userId"
     JOIN metadata ON posts.id = metadata."postId"
-    LEFT JOIN comments on posts.id = comments."postId"
+	LEFT JOIN reposts ON reposts."postId"=posts.id
+	LEFT JOIN comments on posts.id = comments."postId"
     GROUP BY posts.id, users.id, metadata.title, metadata.description, metadata.img
 
     UNION
@@ -33,10 +35,11 @@ async function getPosts() {
     metadata.description AS "metadataDescription", 
     metadata.img AS "metadataImg", 
     COUNT(comments."postId") AS "numberOfComments",
+	COUNT(reposts.id) as "repostCount",
     posts.url,
     posts.id as "postId",
     "reposterUser".username as "repostedByName",
-    "reposterUser".id as "repostedBy",
+    "reposterUser".id as "repostedById",
     reposts."createdAt"
     FROM reposts
     LEFT JOIN posts ON reposts."postId"=posts.id
