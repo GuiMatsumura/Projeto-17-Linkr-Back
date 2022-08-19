@@ -20,4 +20,10 @@ async function getComments(postId) {
     [postId]
   );
 }
-export default { postComment, getComments };
+async function getFollowing(userId) {
+  return connection.query(
+    `SELECT "accountFollowed" FROM followers WHERE "whoFollowed" = $1`,
+    [userId]
+  );
+}
+export default { postComment, getComments, getFollowing };
