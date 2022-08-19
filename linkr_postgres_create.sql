@@ -57,10 +57,31 @@ CREATE TABLE "metadata" (
   OIDS=FALSE
 );
 
+CREATE TABLE "comments"(
+	id SERIAL PRIMARY KEY NOT NULL,
+	comment TEXT NOT NULL, 
+	"postId" INT NOT NULL  REFERENCES posts(id) ON DELETE CASCADE, 
+	"userId" INT  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "reposts"(
+	id SERIAL PRIMARY KEY NOT NULL,
+	"postId" INT NOT NULL  REFERENCES posts(id) ON DELETE CASCADE, 
+	"userId" INT  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+
+CREATE TABLE "followers"(
+	"id" SERIAL PRIMARY KEY NOT NULL,
+	"accountFollowed" INT REFERENCES users(id) NOT NULL,
+	"whoFollowed" INT REFERENCES users(id) NOT NULL,
+);
+
 ALTER TABLE "metadata" ADD CONSTRAINT "metadata_fk0" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE CASCADE;
 ALTER TABLE "posts" ADD CONSTRAINT "posts_fk0" FOREIGN KEY ("userId") REFERENCES "users"("id");
 ALTER TABLE "likes" ADD CONSTRAINT "likes_fk0" FOREIGN KEY ("userId") REFERENCES "users"("id");
 ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE CASCADE;
 ALTER TABLE "hashtagsPost" ADD CONSTRAINT "hashtagsPost_fk0" FOREIGN KEY ("hashtagId") REFERENCES "hashtags"("id");
 ALTER TABLE "hashtagsPost" ADD CONSTRAINT "hashtagsPost_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE CASCADE;
-

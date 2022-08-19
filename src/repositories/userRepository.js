@@ -55,13 +55,25 @@ async function getUsers() {
   );
 }
 
+async function followUser(accountFollowed, whoFollowed){
+  const query = `INSERT INTO followers ("accountFollowed", "whoFollowed") VALUES ($1, $2)`
+
+  return connection.query(query, [accountFollowed, whoFollowed]);
+}
+
+async function isUserFollowed (whoFollowed){
+  return connection.query(`SELECT * FROM followers WHERE "whoFollowed" = $1`, [whoFollowed]);
+}
+
 const usersRepository = {
   createUser,
   getUserByEmail,
   getUserByUsername,
   getUserProfile,
   getPostsByUserId,
-  getUsers
+  getUsers,
+  followUser,
+  isUserFollowed
 };
 
 export default usersRepository;
