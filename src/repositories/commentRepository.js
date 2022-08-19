@@ -10,4 +10,14 @@ async function postComment(body) {
   );
 }
 
-export default { postComment };
+async function getComments(postId) {
+  return connection.query(
+    `SELECT c.id, c.comment, c."postId", c."userId", users.username, users.photo, c."createdAt"
+  FROM comments c 
+  JOIN users ON c."userId" = users.id
+  WHERE "postId" = $1
+  ORDER BY c."createdAt" ASC`,
+    [postId]
+  );
+}
+export default { postComment, getComments };

@@ -9,3 +9,14 @@ export async function postComment(req, res) {
     res.sendStatus(500);
   }
 }
+
+export async function getComments(req, res) {
+  const { postId } = req.params;
+  try {
+    const { rows: comments } = await commentRepository.getComments(postId);
+    res.status(200).send(comments);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+}
