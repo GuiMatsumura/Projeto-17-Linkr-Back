@@ -24,7 +24,7 @@ export async function newPost(req, res) {
     const re = /#(?:\w+\w+(?=#|$)|\w+\b)/g;
     const searchHashtag = [...body.description.matchAll(re)];
 
-    if (!searchHashtag) {
+    if (!searchHashtag.length) {
       const { rows: idPost } = await postRepository.createPost(body);
 
       await metadataMiddleware(body.url, idPost[0].id);
