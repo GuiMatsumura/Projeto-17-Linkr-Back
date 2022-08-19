@@ -9,8 +9,6 @@ export async function getUserById(req, res) {
     const { rows: profile } = await usersRepository.getUserProfile(id);
     const { rows: likes } = await usersRepository.getPostsByUserId(id);
 
-/*     const obj = { profile: profile, posts: [...likes] }
-    console.log(obj.profile[0].username) */
 
     res.status(200).send({ profile: profile, posts: [...likes] })
   } catch (error) {
@@ -28,10 +26,7 @@ export async function followUserById (req, res){
     await userRepository.followUser(accountFollowed, whoFollowed);
     const {rows: follower} = await userRepository.isUserFollowed(whoFollowed);
 
-    /* console.log(follower) */
-    /* if(follower.length === 0){
-      return 
-    } */
+  
 
     res.status(200).send(follower);
   } catch (error) {

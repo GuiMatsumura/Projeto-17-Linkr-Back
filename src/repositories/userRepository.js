@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt';
-import connection from '../dbStrategy/postgres.js';
+import bcrypt from "bcrypt";
+import connection from "../dbStrategy/postgres.js";
 
 async function getUserByEmail(email) {
   return connection.query(`SELECT * FROM users WHERE email = $1`, [email]);
@@ -17,11 +17,10 @@ async function createUser(email, username, password, photo) {
 }
 
 async function getUserByUsername(username) {
-  const query = 'SELECT email FROM users WHERE username = $1';
+  const query = "SELECT email FROM users WHERE username = $1";
 
   return connection.query(query, [username]);
-
-};
+}
 
 async function getUserProfile(id) {
   const query = `
@@ -33,21 +32,60 @@ async function getUserProfile(id) {
   return connection.query(query, [id]);
 }
 
-
-async function getPostsByUserId(id){
+async function getPostsByUserId(id) {
   const query = `
-  SELECT posts."userId" AS "postOwner", posts.id AS "postLiked",  COUNT(likes."userId") AS "numberOfLikes",
-  posts.url, posts.description
+  SELECT 
+  users.id as "userId",
+  users.username AS name,
+  users."photo" as photo, 
+  posts.description,
+  metadata.title AS "metadataTitle",
+  metadata.description AS "metadataDescription", 
+  metadata.img AS "metadataImg", 
+  COUNT(comments."postId") AS "numberOfComments",
+  COUNT(reposts.id) as "repostCount",
+  posts.url,
+  posts.id as "postId",
+  NULL as "repostedByName",
+  NULL as "repostedById",
+  posts."createdAt"
   FROM posts
-  JOIN likes
-  ON posts.id = likes."postId"
+  LEFT JOIN users ON users.id=posts."userId"
+  JOIN metadata ON posts.id = metadata."postId"
+  LEFT JOIN reposts ON reposts."postId"=posts.id
+  LEFT JOIN comments on posts.id = comments."postId"
+  GROUP BY posts.id, users.id, metadata.title, metadata.description, metadata.img
+
+  UNION
+  
+  SELECT 
+  u1.id as "userId",
+  u1.username AS name,
+  u1."photo" as photo, 
+  posts.description,
+  metadata.title AS "metadataTitle",
+  metadata.description AS "metadataDescription", 
+  metadata.img AS "metadataImg", 
+  COUNT(comments."postId") AS "numberOfComments",
+  COUNT(reposts.id) as "repostCount",
+  posts.url,
+  posts.id as "postId",
+  "reposterUser".username as "repostedByName",
+  "reposterUser".id as "repostedById",
+  reposts."createdAt"
+  FROM reposts
+  LEFT JOIN posts ON reposts."postId"=posts.id
+  LEFT JOIN users u1 ON u1.id=posts."userId"
+  LEFT JOIN users "reposterUser" ON "reposterUser".id=reposts."userId"
+  JOIN metadata ON posts.id = metadata."postId"
+  LEFT JOIN comments on posts.id = comments."postId"
   WHERE posts."userId" = $1
-  GROUP BY posts.id
-  `
-
-  return connection.query(query, [id])
+  GROUP BY posts.id, u1.id, reposts."createdAt", reposts."userId", "reposterUser".username, "reposterUser".id,metadata.title, metadata.description, metadata.img
+  ORDER BY "createdAt" DESC
+ LIMIT 20
+  `;
+  return connection.query(query, [id]);
 }
-
 
 async function getUsers() {
   return connection.query(
@@ -55,14 +93,16 @@ async function getUsers() {
   );
 }
 
-async function followUser(accountFollowed, whoFollowed){
-  const query = `INSERT INTO followers ("accountFollowed", "whoFollowed") VALUES ($1, $2)`
+async function followUser(accountFollowed, whoFollowed) {
+  const query = `INSERT INTO followers ("accountFollowed", "whoFollowed") VALUES ($1, $2)`;
 
   return connection.query(query, [accountFollowed, whoFollowed]);
 }
 
-async function isUserFollowed (whoFollowed){
-  return connection.query(`SELECT * FROM followers WHERE "whoFollowed" = $1`, [whoFollowed]);
+async function isUserFollowed(whoFollowed) {
+  return connection.query(`SELECT * FROM followers WHERE "whoFollowed" = $1`, [
+    whoFollowed,
+  ]);
 }
 
 const usersRepository = {
@@ -73,7 +113,7 @@ const usersRepository = {
   getPostsByUserId,
   getUsers,
   followUser,
-  isUserFollowed
+  isUserFollowed,
 };
 
 export default usersRepository;

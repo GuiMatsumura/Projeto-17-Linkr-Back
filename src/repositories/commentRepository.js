@@ -20,6 +20,7 @@ async function getComments(postId) {
     [postId]
   );
 }
+
 async function getFollowing(userId) {
   return connection.query(
     `SELECT "accountFollowed" FROM followers WHERE "whoFollowed" = $1`,

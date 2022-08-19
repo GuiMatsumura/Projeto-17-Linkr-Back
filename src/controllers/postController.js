@@ -22,9 +22,9 @@ export async function newPost(req, res) {
   };
   try {
     const re = /#(?:\w+\w+(?=#|$)|\w+\b)/g;
-    const searchHashtag = [...body.description.matchAll(re)];
+    const searchHashtag = [body.description.match(re)];
 
-    if (!searchHashtag) {
+    if (!searchHashtag[0]) {
       const { rows: idPost } = await postRepository.createPost(body);
 
       await metadataMiddleware(body.url, idPost[0].id);
@@ -76,7 +76,7 @@ export async function newRepost(req, res) {
   const { postId, userId } = req.body;
   try {
     await postRepository.addRepost(postId, userId);
-    return res.status(201);
+    return res.sendStatus(201);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
